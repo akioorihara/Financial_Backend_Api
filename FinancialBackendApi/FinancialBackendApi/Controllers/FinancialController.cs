@@ -18,10 +18,9 @@ namespace FinancialBackendApi.Controllers
         /// <returns>
         /// A list of financial transactions with random types.
         /// </returns>
-        [HttpGet(Name = "GetType")]
+        [HttpGet("types", Name = "GetFinancialTypes")]
         public IEnumerable<FinancialTransactions> Get()
         {
-
             return Categories.Select(category => new FinancialTransactions
             {
                 Type = category
