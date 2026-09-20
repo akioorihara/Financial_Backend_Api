@@ -10,7 +10,7 @@ namespace FinancialBackendApi.Controllers
         /// <summary>
         /// A static list of file headers to simulate a database.
         /// </summary>
-        private static readonly FileHeader[] _files = new[]
+        private static readonly List<FileHeader> _files = new List<FileHeader>
         {
             new FileHeader { Id = 1, FileName = "File1.csv", Created = DateTime.UtcNow, Status = "Processed" },
             new FileHeader { Id = 2, FileName = "File2.csv", Created = DateTime.UtcNow, Status = "Pending" },
@@ -21,7 +21,7 @@ namespace FinancialBackendApi.Controllers
         /// <summary>
         /// A static list of file details to simulate a database.
         /// </summary>
-        private static readonly FileDetail[] _fileDetails = new[]
+        private static readonly List<FileDetail> _fileDetails = new List<FileDetail>
         {
             new FileDetail { Id = 1, FileHeaderId = 1, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = 100.0m, Description = "Transaction 1", Type = "Credit", Category = "Sales", Account = "Account1" },
             new FileDetail { Id = 2, FileHeaderId = 1, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = -50.0m, Description = "Transaction 2", Type = "Debit", Category = "Refunds", Account = "Account2" },
@@ -83,7 +83,19 @@ namespace FinancialBackendApi.Controllers
         [HttpDelete("{id}", Name = "DeleteFile")]
         public ActionResult<string> DeleteFile(int id)
         {
-            return Ok($"File deleted: {id}");
+
+            var file = _files.FirstOrDefault(x => x.Id == id);
+
+            if (file == null)
+                return NotFound($"File not found: {id}");
+
+            // remove the file from the static list (simulating deletion)
+            _files.Remove(file);
+
+            // remove the file details from the static list (simulating deletion)
+            _fileDetails.RemoveAll(x => x.FileHeaderId == id);
+
+            return NoContent();
         }
 
 
@@ -94,9 +106,19 @@ namespace FinancialBackendApi.Controllers
         /// A success message indicating the file was uploaded.
         /// </returns>
         [HttpPost(Name = "UploadFile")]
-        public ActionResult<string> UploadFile()
+        public ActionResult<string> UploadFile(string fileName)
         {
-            return Ok("File uploaded");
+
+            _files.Add(new FileHeader()
+            {
+                Id = _files.Max(x => x.Id) + 1,
+                FileName = fileName,
+                Created = DateTime.UtcNow,
+                Status = "Pending"
+            });
+
+
+            return CreatedAtAction("GetFile", new { id = _files.Max(x => x.Id) }, fileName);
         }
 
 
