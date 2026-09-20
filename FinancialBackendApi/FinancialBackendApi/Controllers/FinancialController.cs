@@ -12,6 +12,12 @@ namespace FinancialBackendApi.Controllers
                 "Debit", "Credit"
             ];
 
+        private static readonly string[] Descriptions =
+            [
+                "Payment for services", "Refund", "Purchase", "Salary", "Transfer"
+            ];
+
+
         /// <summary>
         /// Get financial transactions with random types (Debit or Credit).
         /// </summary>
@@ -28,7 +34,12 @@ namespace FinancialBackendApi.Controllers
 
         }
 
-        [HttpGet("{id}", Name = "GetFinancialTransaction")]
+        /// <summary>
+        /// Get a financial transaction by its ID.
+        /// </summary>
+        /// <param name="id">TransactionId</param>
+        /// <returns></returns>
+        [HttpGet("{id}", Name = "GetFinancialTransactionById")]
         public ActionResult<FinancialTransactions> Get(int id)
         {
             var transaction = Enumerable.Range(1, 2).Select(index => new FinancialTransactions
