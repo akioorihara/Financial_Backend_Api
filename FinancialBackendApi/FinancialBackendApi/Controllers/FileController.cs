@@ -17,6 +17,10 @@ namespace FinancialBackendApi.Controllers
             new FileHeader { Id = 3, FileName = "File3.xlsx", Created = DateTime.UtcNow, Status = "Failed" }
         };
 
+
+        /// <summary>
+        /// A static list of file details to simulate a database.
+        /// </summary>
         private static readonly FileDetail[] _fileDetails = new[]
         {
             new FileDetail { Id = 1, FileHeaderId = 1, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = 100.0m, Description = "Transaction 1", Type = "Credit", Category = "Sales", Account = "Account1" },
@@ -38,17 +42,6 @@ namespace FinancialBackendApi.Controllers
         }
 
 
-        [HttpGet("{id}/details", Name = "GetFileDetails")]
-        public IEnumerable<FileDetail> GetFileDetails(int id)
-        {
-            return _fileDetails
-                .Where(_fileDetails => _fileDetails.FileHeaderId == id)
-                .OrderByDescending(x => x.Id)
-                .Take(100);
-        }
-
-
-
         /// <summary>
         /// Gets a specific file by its ID.
         /// </summary>
@@ -63,11 +56,36 @@ namespace FinancialBackendApi.Controllers
         }
 
 
+        /// <summary>
+        /// Gets the details of a specific file by its ID.
+        /// </summary>
+        /// <param name="id">File ID</param>
+        /// <returns>
+        /// A list of file details.
+        /// </returns>
+        [HttpGet("{id}/details", Name = "GetFileDetails")]
+        public IEnumerable<FileDetail> GetFileDetails(int id)
+        {
+            return _fileDetails
+                .Where(_fileDetails => _fileDetails.FileHeaderId == id)
+                .OrderByDescending(x => x.Id)
+                .Take(100);
+        }
+
+
+        /// <summary>
+        /// Deletes a specific file by its ID.
+        /// </summary>
+        /// <param name="id">File ID</param>
+        /// <returns>
+        /// A success message indicating the file was deleted.
+        /// </returns>
         [HttpDelete("{id}", Name = "DeleteFile")]
         public ActionResult<string> DeleteFile(int id)
         {
             return Ok($"File deleted: {id}");
         }
+
 
         /// <summary>
         /// Uploads a new file to the server.
@@ -81,10 +99,11 @@ namespace FinancialBackendApi.Controllers
             return Ok("File uploaded");
         }
 
+
         /// <summary>
         /// Updates a specific file by its ID.
         /// </summary>
-        /// <param name="id">File id</param>
+        /// <param name="id">File ID</param>
         /// <returns>
         /// A success message indicating the file was updated.
         /// </returns>
