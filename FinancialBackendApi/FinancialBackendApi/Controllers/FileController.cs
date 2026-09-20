@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FinancialBackendApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialBackendApi.Controllers
 {
@@ -6,6 +7,24 @@ namespace FinancialBackendApi.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
+        /// <summary>
+        /// A static list of file headers to simulate a database.
+        /// </summary>
+        private static readonly FileHeader[] _files = new[]
+        {
+            new FileHeader { Id = 1, FileName = "File1.csv", Created = DateTime.UtcNow, Status = "Processed" },
+            new FileHeader { Id = 2, FileName = "File2.csv", Created = DateTime.UtcNow, Status = "Pending" },
+            new FileHeader { Id = 3, FileName = "File3.xlsx", Created = DateTime.UtcNow, Status = "Failed" }
+        };
+
+        private static readonly FileDetail[] _fileDetails = new[]
+        {
+            new FileDetail { Id = 1, FileHeaderId = 1, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = 100.0m, Description = "Transaction 1", Type = "Credit", Category = "Sales", Account = "Account1" },
+            new FileDetail { Id = 2, FileHeaderId = 1, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = -50.0m, Description = "Transaction 2", Type = "Debit", Category = "Refunds", Account = "Account2" },
+            new FileDetail { Id = 3, FileHeaderId = 2, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = 200.0m, Description = "Transaction 3", Type = "Credit", Category = "Sales", Account = "Account1" },
+            new FileDetail { Id = 4, FileHeaderId = 3, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = -75.0m, Description = "Transaction 4", Type = "Debit", Category = "Refunds", Account = "Account2" }
+        };
+
 
 
         /// <summary>
@@ -13,10 +32,22 @@ namespace FinancialBackendApi.Controllers
         /// </summary>
         /// <returns>A list of file names.</returns>
         [HttpGet(Name = "GetFiles")]
-        public IEnumerable<string> Get()
+        public IEnumerable<FileHeader> Get()
         {
-            return new string[] { "File1.csv", "File2.csv", "File3.xlsx" };
+            return _files.OrderByDescending(x => x.Id).Take(100);
         }
+
+
+        [HttpGet("{id}/details", Name = "GetFileDetails")]
+        public IEnumerable<FileDetail> GetFileDetails(int id)
+        {
+            return _fileDetails
+                .Where(_fileDetails => _fileDetails.FileHeaderId == id)
+                .OrderByDescending(x => x.Id)
+                .Take(100);
+        }
+
+
 
         /// <summary>
         /// Gets a specific file by its ID.
