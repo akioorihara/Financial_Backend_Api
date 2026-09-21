@@ -52,7 +52,19 @@ namespace FinancialBackendApi.Controllers
         [HttpGet("{id}", Name = "GetFile")]
         public ActionResult<string> GetFile(int id)
         {
-            return Ok($"File: {id}");
+            var file = _files.FirstOrDefault(x => x.Id == id);
+            var fileDetails = _fileDetails.Where(x => x.FileHeaderId == id).ToList();
+
+            if (file != null)
+            {
+                return Ok(new
+                {
+                    FileHeader = file,
+                    fileDetails = fileDetails
+                });
+            }
+
+            return NotFound($"File not found; {id}");
         }
 
 
@@ -64,12 +76,16 @@ namespace FinancialBackendApi.Controllers
         /// A list of file details.
         /// </returns>
         [HttpGet("{id}/details", Name = "GetFileDetails")]
-        public IEnumerable<FileDetail> GetFileDetails(int id)
+        public ActionResult<IEnumerable<FileDetail>> GetFileDetails(int id)
         {
+            var file = _files.FirstOrDefault(x => x.Id == id);
+            if (file == null)
+                return NotFound($"File not found: {id}");
+
             return _fileDetails
                 .Where(_fileDetails => _fileDetails.FileHeaderId == id)
                 .OrderByDescending(x => x.Id)
-                .Take(100);
+                .Take(100).ToList();
         }
 
 
@@ -100,7 +116,7 @@ namespace FinancialBackendApi.Controllers
 
 
         /// <summary>
-        /// Uploads a new file to the server.
+        /// TODO - finish this later after hooking up with the database.
         /// </summary>
         /// <returns>
         /// A success message indicating the file was uploaded.
@@ -123,7 +139,7 @@ namespace FinancialBackendApi.Controllers
 
 
         /// <summary>
-        /// Updates a specific file by its ID.
+        /// TODO - finish this later after hooking up with the database.
         /// </summary>
         /// <param name="id">File ID</param>
         /// <returns>
