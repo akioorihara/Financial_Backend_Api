@@ -36,9 +36,9 @@ namespace FinancialBackendApi.Controllers
         /// </summary>
         /// <returns>A list of file names.</returns>
         [HttpGet(Name = "GetFiles")]
-        public IEnumerable<FileHeader> Get()
+        public IEnumerable<FileHeader> Get(int page = 1, int pageSize = 10)
         {
-            return _files.OrderByDescending(x => x.Id).Take(100);
+            return _files.OrderByDescending(x => x.Id).Skip((page - 1) * pageSize).Take(pageSize);
         }
 
 
@@ -124,31 +124,43 @@ namespace FinancialBackendApi.Controllers
         [HttpPost(Name = "UploadFile")]
         public ActionResult<string> UploadFile(string fileName)
         {
+            var nextId = _files.Max(x => x.Id) + 1;
 
             _files.Add(new FileHeader()
             {
-                Id = _files.Max(x => x.Id) + 1,
+                Id = nextId,
                 FileName = fileName,
                 Created = DateTime.UtcNow,
                 Status = "Pending"
             });
 
-
-            return CreatedAtAction("GetFile", new { id = _files.Max(x => x.Id) }, fileName);
+            return CreatedAtAction("GetFile", new { id = nextId }, fileName);
         }
 
 
         /// <summary>
-        /// TODO - finish this later after hooking up with the database.
+        /// Updates a specific file by its ID. 
         /// </summary>
         /// <param name="id">File ID</param>
         /// <returns>
         /// A success message indicating the file was updated.
         /// </returns>
         [HttpPut("{id}", Name = "UpdateFile")]
-        public ActionResult<string> UpdateFile(int id)
+        public ActionResult<string> UpdateFile(int id, string fileName, string status)
         {
-            return Ok($"File updated: {id}");
+            var file = _files.FirstOrDefault(x => x.Id == id);
+            if (file == null)
+                return NotFound($"File Not Found: {id}");
+
+            file.FileName = fileName;
+            file.Status = status;
+
+            return Ok(new
+            {
+                file.Id,
+                file.FileName,
+                file.Status
+            });
         }
 
     }
