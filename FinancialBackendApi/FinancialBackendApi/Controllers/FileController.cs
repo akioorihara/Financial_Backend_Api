@@ -36,14 +36,23 @@ namespace FinancialBackendApi.Controllers
         /// </summary>
         /// <returns>A list of file names.</returns>
         [HttpGet(Name = "GetFiles")]
-        public IEnumerable<FileHeader> Get(int page = 1, int pageSize = 10)
+        public ActionResult<IEnumerable<FileHeader>> Get(int page = 1, int pageSize = 10)
         {
-            return _files.OrderByDescending(x => x.Id).Skip((page - 1) * pageSize).Take(pageSize);
+            if (page <= 0 || pageSize <= 0)
+            {
+                return BadRequest("Page and PageSize must be greater than 0.");
+            }
+
+            return _files
+                .OrderByDescending(x => x.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize).ToList();
         }
 
 
         /// <summary>
         /// Gets a specific file by its ID.
+        /// TODO - implement this method with DTO and database access.
         /// </summary>
         /// <param name="id">File ID</param>
         /// <returns>
@@ -83,7 +92,7 @@ namespace FinancialBackendApi.Controllers
                 return NotFound($"File not found: {id}");
 
             return _fileDetails
-                .Where(_fileDetails => _fileDetails.FileHeaderId == id)
+                .Where(x => x.FileHeaderId == id)
                 .OrderByDescending(x => x.Id)
                 .Take(100).ToList();
         }
@@ -97,7 +106,7 @@ namespace FinancialBackendApi.Controllers
         /// A success message indicating the file was deleted.
         /// </returns>
         [HttpDelete("{id}", Name = "DeleteFile")]
-        public ActionResult<string> DeleteFile(int id)
+        public ActionResult DeleteFile(int id)
         {
 
             var file = _files.FirstOrDefault(x => x.Id == id);
