@@ -6,8 +6,16 @@ namespace FinancialBackendApi.Data
     public class FinancialDbContext : DbContext
     {
         // DbSets are how EF Core knows which entities to include to the model and how to map them to database tables.
-        public DbSet<FileHeader> fileHeaders { get; set; }
-        public DbSet<FileDetail> fileDetails { get; set; }
+        public DbSet<FileHeader> FileHeaders { get; set; }
+        public DbSet<FileDetail> FileDetails { get; set; }
+
+
+        FinancialDbContext(DbContextOptions<FinancialDbContext> options) : base(options)
+        {
+
+        }
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
