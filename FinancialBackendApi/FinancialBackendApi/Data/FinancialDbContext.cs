@@ -1,7 +1,7 @@
 ﻿using FinancialBackendApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinancialBackendApi.Contexts
+namespace FinancialBackendApi.Data
 {
     public class FinancialDbContext : DbContext
     {
