@@ -10,12 +10,10 @@ namespace FinancialBackendApi.Data
         public DbSet<FileDetail> FileDetails { get; set; }
 
 
-        FinancialDbContext(DbContextOptions<FinancialDbContext> options)
+        public FinancialDbContext(DbContextOptions<FinancialDbContext> options)
             : base(options)
         {
-
         }
-
 
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
