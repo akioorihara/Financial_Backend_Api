@@ -1,4 +1,5 @@
-﻿using FinancialBackendApi.Models;
+﻿using FinancialBackendApi.Data;
+using FinancialBackendApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialBackendApi.Controllers
@@ -7,6 +8,22 @@ namespace FinancialBackendApi.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
+
+        private readonly ILogger<FileController> _logger;
+        private readonly FinancialDbContext _context;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileController"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="context">The financial database context.</param>
+        public FileController(ILogger<FileController> logger, FinancialDbContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
+
+
         /// <summary>
         /// A static list of file headers to simulate a database.
         /// </summary>
@@ -43,7 +60,7 @@ namespace FinancialBackendApi.Controllers
                 return BadRequest("Page and PageSize must be greater than 0.");
             }
 
-            return _files
+            return _context.FileHeaders
                 .OrderByDescending(x => x.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize).ToList();
