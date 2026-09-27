@@ -61,7 +61,7 @@ namespace FinancialBackendApi.Controllers
                 return Ok(new
                 {
                     FileHeader = file,
-                    fileDetails = fileDetails
+                    FileDetails = fileDetails
                 });
             }
 
