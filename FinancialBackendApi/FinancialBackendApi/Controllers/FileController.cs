@@ -23,31 +23,6 @@ namespace FinancialBackendApi.Controllers
             _context = context;
         }
 
-
-        /// <summary>
-        /// A static list of file headers to simulate a database.
-        /// </summary>
-        private static readonly List<FileHeader> _files = new List<FileHeader>
-        {
-            new FileHeader { Id = 1, FileName = "File1.csv", Created = DateTime.UtcNow, Status = "Processed" },
-            new FileHeader { Id = 2, FileName = "File2.csv", Created = DateTime.UtcNow, Status = "Pending" },
-            new FileHeader { Id = 3, FileName = "File3.xlsx", Created = DateTime.UtcNow, Status = "Failed" }
-        };
-
-
-        /// <summary>
-        /// A static list of file details to simulate a database.
-        /// </summary>
-        private static readonly List<FileDetail> _fileDetails = new List<FileDetail>
-        {
-            new FileDetail { Id = 1, FileHeaderId = 1, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = 100.0m, Description = "Transaction 1", Type = "Credit", Category = "Sales", Account = "Account1" },
-            new FileDetail { Id = 2, FileHeaderId = 1, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = -50.0m, Description = "Transaction 2", Type = "Debit", Category = "Refunds", Account = "Account2" },
-            new FileDetail { Id = 3, FileHeaderId = 2, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = 200.0m, Description = "Transaction 3", Type = "Credit", Category = "Sales", Account = "Account1" },
-            new FileDetail { Id = 4, FileHeaderId = 3, Date = DateOnly.FromDateTime(DateTime.UtcNow), Amount = -75.0m, Description = "Transaction 4", Type = "Debit", Category = "Refunds", Account = "Account2" }
-        };
-
-
-
         /// <summary>
         /// Gets a list of available files.
         /// </summary>
@@ -79,7 +54,7 @@ namespace FinancialBackendApi.Controllers
         public ActionResult<string> GetFile(int id)
         {
             var file = _context.FileHeaders.FirstOrDefault(x => x.Id == id);
-            var fileDetails = _context.FileDetails.Where(x => x.FileHeaderId == id).ToList();
+            var fileDetails = _context.FileDetails.Where(x => x.FileHeaderId == id);
 
             if (file != null)
             {
@@ -132,10 +107,11 @@ namespace FinancialBackendApi.Controllers
                 return NotFound($"File not found: {id}");
 
             // remove the file from the static list (simulating deletion)
-            _files.Remove(file);
+            _context.FileHeaders.Remove(file);
 
             // remove the file details from the static list (simulating deletion)
-            _fileDetails.RemoveAll(x => x.FileHeaderId == id);
+            _context.FileDetails.RemoveRange(
+                _context.FileDetails.Where(x => x.FileHeaderId == id));
 
             return NoContent();
         }
