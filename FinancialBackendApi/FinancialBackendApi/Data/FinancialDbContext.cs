@@ -10,18 +10,14 @@ namespace FinancialBackendApi.Data
         public DbSet<FileDetail> FileDetails { get; set; }
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FinancialDbContext"/> class.
+        /// </summary>
+        /// <param name="options">
+        /// The options for the context.
+        /// </param>
         public FinancialDbContext(DbContextOptions<FinancialDbContext> options)
-            : base(options)
-        {
-        }
-
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    // Configure the database connection string here if not using dependency injection.
-        //    // For example, you can use a local SQL Server database:
-        //    optionsBuilder.UseSqlServer("ConnectionStrings:DefaultConnection");
-        //}
+            : base(options) { }
 
     }
 

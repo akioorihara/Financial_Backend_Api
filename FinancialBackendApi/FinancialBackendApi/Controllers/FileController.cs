@@ -78,8 +78,8 @@ namespace FinancialBackendApi.Controllers
         [HttpGet("{id}", Name = "GetFile")]
         public ActionResult<string> GetFile(int id)
         {
-            var file = _files.FirstOrDefault(x => x.Id == id);
-            var fileDetails = _fileDetails.Where(x => x.FileHeaderId == id).ToList();
+            var file = _context.FileHeaders.FirstOrDefault(x => x.Id == id);
+            var fileDetails = _context.FileDetails.Where(x => x.FileHeaderId == id).ToList();
 
             if (file != null)
             {
@@ -104,11 +104,11 @@ namespace FinancialBackendApi.Controllers
         [HttpGet("{id}/details", Name = "GetFileDetails")]
         public ActionResult<IEnumerable<FileDetail>> GetFileDetails(int id)
         {
-            var file = _files.FirstOrDefault(x => x.Id == id);
+            var file = _context.FileDetails.FirstOrDefault(x => x.Id == id);
             if (file == null)
                 return NotFound($"File not found: {id}");
 
-            return _fileDetails
+            return _context.FileDetails
                 .Where(x => x.FileHeaderId == id)
                 .OrderByDescending(x => x.Id)
                 .Take(100).ToList();
@@ -126,7 +126,7 @@ namespace FinancialBackendApi.Controllers
         public ActionResult DeleteFile(int id)
         {
 
-            var file = _files.FirstOrDefault(x => x.Id == id);
+            var file = _context.FileHeaders.FirstOrDefault(x => x.Id == id);
 
             if (file == null)
                 return NotFound($"File not found: {id}");
@@ -150,9 +150,9 @@ namespace FinancialBackendApi.Controllers
         [HttpPost(Name = "UploadFile")]
         public ActionResult<string> UploadFile(string fileName)
         {
-            var nextId = _files.Max(x => x.Id) + 1;
+            var nextId = _context.FileHeaders.Max(x => x.Id) + 1;
 
-            _files.Add(new FileHeader()
+            _context.FileHeaders.Add(new FileHeader()
             {
                 Id = nextId,
                 FileName = fileName,
@@ -174,7 +174,7 @@ namespace FinancialBackendApi.Controllers
         [HttpPut("{id}", Name = "UpdateFile")]
         public ActionResult<string> UpdateFile(int id, string fileName, string status)
         {
-            var file = _files.FirstOrDefault(x => x.Id == id);
+            var file = _context.FileHeaders.FirstOrDefault(x => x.Id == id);
             if (file == null)
                 return NotFound($"File Not Found: {id}");
 
