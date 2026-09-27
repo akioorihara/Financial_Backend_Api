@@ -10,6 +10,5 @@
         public string Type { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public string Account { get; set; } = string.Empty;
-        //public FileHeader FileHeader { get; set; } = new FileHeader();
     }
 }
