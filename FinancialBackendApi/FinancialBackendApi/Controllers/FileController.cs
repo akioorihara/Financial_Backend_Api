@@ -54,13 +54,19 @@ namespace FinancialBackendApi.Controllers
         public ActionResult<string> GetFile(int id)
         {
             var file = _context.FileHeaders.FirstOrDefault(x => x.Id == id);
-            var fileDetails = _context.FileDetails.Where(x => x.FileHeaderId == id).ToList();
+            var fileDetails = _context.FileDetails.Where(x => x.FileHeaderId == id);
 
             if (file != null)
             {
                 return Ok(new
                 {
-                    FileHeader = file,
+                    FileHeader = new
+                    {
+                        file.Id,
+                        file.FileName,
+                        file.Created,
+                        file.Status,
+                    },
                     FileDetails = fileDetails
                 });
             }
