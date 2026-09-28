@@ -158,21 +158,23 @@ namespace FinancialBackendApi.Controllers
         /// A success message indicating the file was updated.
         /// </returns>
         [HttpPut("{id}", Name = "UpdateFile")]
-        public ActionResult<string> UpdateFile(int id, string fileName, string status)
+        public async Task<ActionResult<string>> UpdateFile(string fileName)
         {
-            var file = _context.FileHeaders.FirstOrDefault(x => x.Id == id);
-            if (file == null)
-                return NotFound($"File Not Found: {id}");
+            bool doesFileExist = await _context.FileHeaders.FirstOrDefaultAsync(x => x.FileName == fileName) != null;
+            if (doesFileExist)
+                return NotFound($"File already exists: {fileName}");
 
-            file.FileName = fileName;
-            file.Status = status;
-
-            return Ok(new
+            var file = new FileHeader
             {
-                file.Id,
-                file.FileName,
-                file.Status
-            });
+                FileName = fileName,
+                //Created = DateTime.UtcNow,
+                //Status = "Pending"
+            };
+
+            _context.FileHeaders.Add(file);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetFile", new { id = file.Id }, file);
         }
 
     }
