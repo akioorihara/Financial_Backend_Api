@@ -84,19 +84,19 @@ namespace FinancialBackendApi.Controllers
         /// <summary>
         /// Gets the detail object by its ID.
         /// </summary>
-        /// <param name="fileId">File ID</param>
+        /// <param name="id">File ID</param>
         /// <returns>
         /// A list of file details.
         /// </returns>
         [HttpGet("{id}/details", Name = "GetFileDetails")]
-        public async Task<ActionResult<IEnumerable<FileDetail>>> GetFileDetails(int fileId)
+        public async Task<ActionResult<IEnumerable<FileDetail>>> GetFileDetails(int id)
         {
-            var file = await _context.FileDetails.FirstOrDefaultAsync(x => x.Id == fileId);
+            var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == id);
             if (file == null)
-                return NotFound($"File not found: ID - {fileId}");
+                return NotFound($"File not found: ID - {id}");
 
             return await _context.FileDetails
-                .Where(x => x.FileHeaderId == fileId)
+                .Where(x => x.FileHeaderId == id)
                 .OrderByDescending(x => x.Id)
                 .Take(100).ToListAsync();
         }
@@ -110,20 +110,18 @@ namespace FinancialBackendApi.Controllers
         /// A success message indicating the file was deleted.
         /// </returns>
         [HttpDelete("{id}", Name = "DeleteFile")]
-        public ActionResult DeleteFile(int id)
+        public async Task<ActionResult> DeleteFile(int id)
         {
-
-            var file = _context.FileHeaders.FirstOrDefault(x => x.Id == id);
+            var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == id);
 
             if (file == null)
-                return NotFound($"File not found: {id}");
+                return NotFound($"File not found: ID - {id}");
 
-            // remove the file from the static list (simulating deletion)
+            // remove the file and its details from the database
             _context.FileHeaders.Remove(file);
 
-            // remove the file details from the static list (simulating deletion)
-            _context.FileDetails.RemoveRange(
-                _context.FileDetails.Where(x => x.FileHeaderId == id));
+            // save changes to the database
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
