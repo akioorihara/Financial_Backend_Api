@@ -167,7 +167,7 @@ namespace FinancialBackendApi.Controllers
             var file = new FileHeader
             {
                 FileName = fileName,
-                //Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow
                 //Status = "Pending"
             };
 
