@@ -1,6 +1,7 @@
 ﻿using FinancialBackendApi.Data;
 using FinancialBackendApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinancialBackendApi.Controllers
 {
@@ -8,8 +9,14 @@ namespace FinancialBackendApi.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
-
+        /// <summary>
+        /// The logger instance for logging information, warnings, and errors.
+        /// </summary>
         private readonly ILogger<FileController> _logger;
+
+        /// <summary>
+        /// The financial database context for accessing file headers and details.
+        /// </summary>
         private readonly FinancialDbContext _context;
 
         /// <summary>
@@ -28,33 +35,32 @@ namespace FinancialBackendApi.Controllers
         /// </summary>
         /// <returns>A list of file names.</returns>
         [HttpGet(Name = "GetFiles")]
-        public ActionResult<IEnumerable<FileHeader>> Get(int page = 1, int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<FileHeader>>> Get(int page = 1, int pageSize = 10)
         {
             if (page <= 0 || pageSize <= 0)
             {
                 return BadRequest("Page and PageSize must be greater than 0.");
             }
 
-            return _context.FileHeaders
+            return await _context.FileHeaders
                 .OrderByDescending(x => x.Id)
                 .Skip((page - 1) * pageSize)
-                .Take(pageSize).ToList();
+                .Take(pageSize).ToListAsync();
         }
 
 
         /// <summary>
         /// Gets a specific file by its ID.
-        /// TODO - implement this method with DTO and database access.
         /// </summary>
         /// <param name="id">File ID</param>
         /// <returns>
         /// A success message indicating the file was retrieved.
         /// </returns>
         [HttpGet("{id}", Name = "GetFile")]
-        public ActionResult<string> GetFile(int id)
+        public async Task<ActionResult<string>> GetFile(int id)
         {
-            var file = _context.FileHeaders.FirstOrDefault(x => x.Id == id);
-            var fileDetails = _context.FileDetails.Where(x => x.FileHeaderId == id);
+            var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == id);
+            var fileDetails = await _context.FileDetails.Where(x => x.FileHeaderId == id).ToListAsync();
 
             if (file != null)
             {
