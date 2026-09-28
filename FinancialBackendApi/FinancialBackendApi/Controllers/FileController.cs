@@ -82,23 +82,23 @@ namespace FinancialBackendApi.Controllers
 
 
         /// <summary>
-        /// Gets the details of a specific file by its ID.
+        /// Gets the detail object by its ID.
         /// </summary>
-        /// <param name="id">File ID</param>
+        /// <param name="fileId">File ID</param>
         /// <returns>
         /// A list of file details.
         /// </returns>
         [HttpGet("{id}/details", Name = "GetFileDetails")]
-        public ActionResult<IEnumerable<FileDetail>> GetFileDetails(int id)
+        public async Task<ActionResult<IEnumerable<FileDetail>>> GetFileDetails(int fileId)
         {
-            var file = _context.FileDetails.FirstOrDefault(x => x.Id == id);
+            var file = await _context.FileDetails.FirstOrDefaultAsync(x => x.Id == fileId);
             if (file == null)
-                return NotFound($"File not found: {id}");
+                return NotFound($"File not found: ID - {fileId}");
 
-            return _context.FileDetails
-                .Where(x => x.FileHeaderId == id)
+            return await _context.FileDetails
+                .Where(x => x.FileHeaderId == fileId)
                 .OrderByDescending(x => x.Id)
-                .Take(100).ToList();
+                .Take(100).ToListAsync();
         }
 
 
