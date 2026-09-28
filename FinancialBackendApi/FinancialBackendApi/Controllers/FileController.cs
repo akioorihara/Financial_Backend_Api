@@ -35,7 +35,7 @@ namespace FinancialBackendApi.Controllers
         /// </summary>
         /// <returns>A list of file names.</returns>
         [HttpGet(Name = "GetFiles")]
-        public async Task<ActionResult<IEnumerable<FileHeader>>> Get(int page = 1, int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<FileHeaderDto>>> Get(int page = 1, int pageSize = 10)
         {
             if (page <= 0 || pageSize <= 0)
             {
@@ -45,7 +45,11 @@ namespace FinancialBackendApi.Controllers
             return await _context.FileHeaders
                 .OrderByDescending(x => x.Id)
                 .Skip((page - 1) * pageSize)
-                .Take(pageSize).ToListAsync();
+                .Take(pageSize).Select(x => new FileHeaderDto
+                {
+                    FileName = x.FileName,
+                    Status = x.Status
+                }).ToListAsync();
         }
 
 
