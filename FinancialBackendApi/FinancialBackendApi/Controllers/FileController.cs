@@ -72,7 +72,7 @@ namespace FinancialBackendApi.Controllers
 
             if (file != null)
             {
-                return Ok(new
+                return Ok(new FileWithDetailsDto
                 {
                     FileHeader = new FileHeaderDto
                     {
