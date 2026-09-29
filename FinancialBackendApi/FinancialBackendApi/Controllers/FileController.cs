@@ -65,7 +65,7 @@ namespace FinancialBackendApi.Controllers
         /// A success message indicating the file was retrieved.
         /// </returns>
         [HttpGet("{id}", Name = "GetFile")]
-        public async Task<ActionResult<string>> GetFile(int id)
+        public async Task<ActionResult<FileWithDetailsDto>> GetFile(int id)
         {
             var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == id);
             var fileDetails = await _context.FileDetails.Where(x => x.FileHeaderId == id).ToListAsync();
@@ -74,28 +74,25 @@ namespace FinancialBackendApi.Controllers
             {
                 return Ok(new
                 {
-                    FileWithDetailsDto = new FileWithDetailsDto
+                    FileHeader = new FileHeaderDto
                     {
-                        FileHeader = new FileHeaderDto
-                        {
-                            Id = file.Id,
-                            FileName = file.FileName,
-                            Created = file.Created,
-                            Status = file.Status
-                        },
-                        FileDetails = fileDetails.Select(x => new FileDetailDto
-                        {
-                            Id = x.Id,
-                            FileHeaderId = x.FileHeaderId,
-                            Date = x.Date,
-                            Amount = x.Amount,
-                            Description = x.Description,
-                            Type = x.Type,
-                            Category = x.Category,
-                            Account = x.Account
+                        Id = file.Id,
+                        FileName = file.FileName,
+                        Created = file.Created,
+                        Status = file.Status
+                    },
+                    FileDetails = fileDetails.Select(x => new FileDetailDto
+                    {
+                        Id = x.Id,
+                        FileHeaderId = x.FileHeaderId,
+                        Date = x.Date,
+                        Amount = x.Amount,
+                        Description = x.Description,
+                        Type = x.Type,
+                        Category = x.Category,
+                        Account = x.Account
 
-                        }).ToList()
-                    }
+                    }).ToList()
                 });
             }
 
