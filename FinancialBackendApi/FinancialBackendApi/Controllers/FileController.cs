@@ -58,7 +58,7 @@ namespace FinancialBackendApi.Controllers
 
 
         /// <summary>
-        /// Gets a specific file by its ID.
+        /// Async method to return a specific file by its ID.
         /// </summary>
         /// <param name="id">File ID</param>
         /// <returns>
