@@ -48,6 +48,7 @@ namespace FinancialBackendApi.Controllers
                 .Take(pageSize)
                 .Select(x => new FileHeaderDto
                 {
+                    Id = x.Id,
                     FileName = x.FileName,
                     Created = x.Created,
                     Status = x.Status
@@ -77,6 +78,7 @@ namespace FinancialBackendApi.Controllers
                     {
                         FileHeader = new FileHeaderDto
                         {
+                            Id = file.Id,
                             FileName = file.FileName,
                             Created = file.Created,
                             Status = file.Status
