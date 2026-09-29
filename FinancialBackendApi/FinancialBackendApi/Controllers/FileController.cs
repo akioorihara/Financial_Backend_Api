@@ -73,14 +73,27 @@ namespace FinancialBackendApi.Controllers
             {
                 return Ok(new
                 {
-                    FileHeader = new
+                    FileWithDetailsDto = new FileWithDetailsDto
                     {
-                        file.Id,
-                        file.FileName,
-                        file.Created,
-                        file.Status,
-                    },
-                    FileDetails = fileDetails
+                        FileHeader = new FileHeaderDto
+                        {
+                            FileName = file.FileName,
+                            Created = file.Created,
+                            Status = file.Status
+                        },
+                        FileDetails = fileDetails.Select(x => new FileDetailDto
+                        {
+                            Id = x.Id,
+                            FileHeaderId = x.FileHeaderId,
+                            Date = x.Date,
+                            Amount = x.Amount,
+                            Description = x.Description,
+                            Type = x.Type,
+                            Category = x.Category,
+                            Account = x.Account
+
+                        }).ToList()
+                    }
                 });
             }
 
