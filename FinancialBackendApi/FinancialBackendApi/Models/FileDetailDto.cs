@@ -2,10 +2,14 @@
 {
     public class FileDetailDto
     {
-        public string? AccountNumber { get; set; }
-        public string? TransactionType { get; set; }
-        public decimal? Amount { get; set; }
-        public DateTime? TransactionDate { get; set; }
+        public int Id { get; set; }
+        public int FileHeaderId { get; set; }
+        public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
+        public decimal Amount { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public string Account { get; set; } = string.Empty;
 
     }
 }
