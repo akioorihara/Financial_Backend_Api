@@ -7,6 +7,6 @@
     public class FileWithDetailsDto
     {
         public FileHeaderDto FileHeader { get; set; } = new FileHeaderDto();
-        public FileDetailDto FileDetail { get; set; } = new FileDetailDto();
+        public List<FileDetailDto> FileDetails { get; set; } = new List<FileDetailDto>();
     }
 }
