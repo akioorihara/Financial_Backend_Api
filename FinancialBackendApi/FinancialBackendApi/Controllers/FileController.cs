@@ -45,13 +45,14 @@ namespace FinancialBackendApi.Controllers
             return await _context.FileHeaders
                 .OrderByDescending(x => x.Id)
                 .Skip((page - 1) * pageSize)
-                .Take(pageSize).Select(x => new FileHeaderDto
+                .Take(pageSize)
+                .Select(x => new FileHeaderDto
                 {
-                    Id = x.Id,
                     FileName = x.FileName,
                     Created = x.Created,
                     Status = x.Status
-                }).ToListAsync();
+                })
+                .ToListAsync();
         }
 
 
