@@ -47,7 +47,9 @@ namespace FinancialBackendApi.Controllers
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize).Select(x => new FileHeaderDto
                 {
+                    Id = x.Id,
                     FileName = x.FileName,
+                    Created = x.Created,
                     Status = x.Status
                 }).ToListAsync();
         }
