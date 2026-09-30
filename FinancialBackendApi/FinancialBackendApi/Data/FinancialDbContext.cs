@@ -1,4 +1,4 @@
-﻿using FinancialBackendApi.Models;
+﻿using FinancialBackendApi.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinancialBackendApi.Data

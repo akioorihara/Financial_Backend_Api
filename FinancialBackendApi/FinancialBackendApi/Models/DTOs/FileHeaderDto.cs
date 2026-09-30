@@ -1,4 +1,4 @@
-﻿namespace FinancialBackendApi.Models
+﻿namespace FinancialBackendApi.Models.DTOs
 {
     public class FileHeaderDto
     {

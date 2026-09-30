@@ -1,6 +1,6 @@
-﻿namespace FinancialBackendApi.Models
+﻿namespace FinancialBackendApi.Models.DTOs
 {
-    public class FileDetail
+    public class FileDetailDto
     {
         public int Id { get; set; }
         public int FileHeaderId { get; set; }
@@ -10,5 +10,6 @@
         public string Type { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public string Account { get; set; } = string.Empty;
+
     }
 }

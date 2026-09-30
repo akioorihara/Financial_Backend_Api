@@ -1,5 +1,7 @@
 ﻿using FinancialBackendApi.Data;
-using FinancialBackendApi.Models;
+using FinancialBackendApi.Models.DTOs;
+using FinancialBackendApi.Models.Entities;
+using FinancialBackendApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,14 +22,21 @@ namespace FinancialBackendApi.Controllers
         private readonly FinancialDbContext _context;
 
         /// <summary>
+        /// The file service for handling file-related operations.
+        /// </summary>
+        private readonly IFileService _fileService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FileController"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="context">The financial database context.</param>
-        public FileController(ILogger<FileController> logger, FinancialDbContext context)
+        /// <param name="fileService">The file service.</param>
+        public FileController(ILogger<FileController> logger, FinancialDbContext context, IFileService fileService)
         {
             _logger = logger;
             _context = context;
+            _fileService = fileService;
         }
 
         /// <summary>
