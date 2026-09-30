@@ -4,22 +4,37 @@ namespace FinancialBackendApi.Services
 {
     public class FileService : IFileService
     {
-        Task IFileService.DeleteFileAsync(int fileId)
+        public async Task DeleteFileAsync(int fileId)
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<FileDetailDto>> IFileService.GetFileDetailDtosAsync(int fileId)
+        public async Task<IEnumerable<FileDetailDto>> GetFileDetailDtosAsync(int fileId)
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<FileHeaderDto>> IFileService.GetFilesAsync(int page, int pageSize)
+        public async Task<IEnumerable<FileHeaderDto>> GetFilesAsync(int page, int pageSize)
         {
-            throw new NotImplementedException();
+            //_context.FileHeaders
+            //    .OrderByDescending(x => x.Id)
+            //    .Skip((page - 1) * pageSize)
+            //    .Take(pageSize)
+            //    .Select(x => new FileHeaderDto
+            //    {
+            //        Id = x.Id,
+            //        FileName = x.FileName,
+            //        Created = x.Created,
+            //        Status = x.Status
+            //    })
+            //    .ToListAsync();
+
+            return null;
+
+            //throw new NotImplementedException();
         }
 
-        Task<FileWithDetailsDto> IFileService.GetFileWithDetailsAsync(int fileId)
+        public async Task<FileWithDetailsDto> GetFileWithDetailsAsync(int fileId)
         {
             throw new NotImplementedException();
         }

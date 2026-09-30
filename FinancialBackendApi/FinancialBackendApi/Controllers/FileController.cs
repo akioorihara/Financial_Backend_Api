@@ -51,18 +51,9 @@ namespace FinancialBackendApi.Controllers
                 return BadRequest("Page and PageSize must be greater than 0.");
             }
 
-            return await _context.FileHeaders
-                .OrderByDescending(x => x.Id)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .Select(x => new FileHeaderDto
-                {
-                    Id = x.Id,
-                    FileName = x.FileName,
-                    Created = x.Created,
-                    Status = x.Status
-                })
-                .ToListAsync();
+            var files = await _fileService.GetFilesAsync(page, pageSize);
+
+            return Ok(files);
         }
 
 
