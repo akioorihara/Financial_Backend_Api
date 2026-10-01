@@ -67,37 +67,16 @@ namespace FinancialBackendApi.Controllers
         [HttpGet("{id}", Name = "GetFile")]
         public async Task<ActionResult<FileWithDetailsDto>> GetFile(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest($"Invalid File ID: {id}");
+            }
 
-            var tryingto = await _fileService.GetFileWithDetailsAsync(id);
-
-
-            var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == id);
-            var fileDetails = await _context.FileDetails.Where(x => x.FileHeaderId == id).ToListAsync();
+            var file = await _fileService.GetFileWithDetailsAsync(id);
 
             if (file != null)
             {
-                return Ok(new FileWithDetailsDto
-                {
-                    FileHeader = new FileHeaderDto
-                    {
-                        Id = file.Id,
-                        FileName = file.FileName,
-                        Created = file.Created,
-                        Status = file.Status
-                    },
-                    FileDetails = fileDetails.Select(x => new FileDetailDto
-                    {
-                        Id = x.Id,
-                        FileHeaderId = x.FileHeaderId,
-                        Date = x.Date,
-                        Amount = x.Amount,
-                        Description = x.Description,
-                        Type = x.Type,
-                        Category = x.Category,
-                        Account = x.Account
-
-                    }).ToList()
-                });
+                return Ok(file);
             }
 
             return NotFound($"File not found; {id}");
