@@ -6,10 +6,19 @@ namespace FinancialBackendApi.Services
 {
     public class FileService : IFileService
     {
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileService"/> class.
+        /// </summary>
+        /// <param name="context">The database context.</param>
+        /// <param name="logger">The logger instance.</param>
         private readonly FinancialDbContext _context;
         private readonly ILogger<FileService> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileService"/> class.
+        /// </summary>
+        /// <param name="context">The database context.</param>
+        /// <param name="logger">The logger instance.</param>
         public FileService(FinancialDbContext context, ILogger<FileService> logger)
         {
             _context = context;
