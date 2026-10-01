@@ -67,6 +67,10 @@ namespace FinancialBackendApi.Controllers
         [HttpGet("{id}", Name = "GetFile")]
         public async Task<ActionResult<FileWithDetailsDto>> GetFile(int id)
         {
+
+            var tryingto = await _fileService.GetFileWithDetailsAsync(id);
+
+
             var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == id);
             var fileDetails = await _context.FileDetails.Where(x => x.FileHeaderId == id).ToListAsync();
 

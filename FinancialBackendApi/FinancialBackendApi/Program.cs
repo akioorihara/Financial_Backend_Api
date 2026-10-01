@@ -1,4 +1,5 @@
 using FinancialBackendApi.Data;
+using FinancialBackendApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +14,11 @@ builder.Services.AddOpenApi();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+// Register the FinancialDbContext with the dependency injection container, using SQL Server as the database provider.
 builder.Services.AddDbContext<FinancialDbContext>(x => x.UseSqlServer(connectionString));
 
+// Add the file service to the services container for dependency injection.
+builder.Services.AddScoped<IFileService, FileService>();
 
 var app = builder.Build();
 

@@ -25,6 +25,12 @@ namespace FinancialBackendApi.Services
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gets a paginated list of file headers.
+        /// </summary>
+        /// <param name="page">The page number.</param>
+        /// <param name="pageSize">The number of items per page.</param>
+        /// <returns>The list of file headers.</returns>
         public async Task<IEnumerable<FileHeaderDto>> GetFilesAsync(int page, int pageSize)
         {
             return await _context.FileHeaders
@@ -55,6 +61,13 @@ namespace FinancialBackendApi.Services
 
         public async Task<FileWithDetailsDto> GetFileWithDetailsAsync(int fileId)
         {
+
+            var fileHeader = await _context.FileHeaders
+                .Include(x => x.Details)
+                .FirstOrDefaultAsync(x => x.Id == fileId);
+
+
+
             throw new NotImplementedException();
         }
     }
