@@ -74,12 +74,7 @@ namespace FinancialBackendApi.Controllers
 
             var file = await _fileService.GetFileWithDetailsAsync(id);
 
-            if (file != null)
-            {
-                return Ok(file);
-            }
-
-            return NotFound($"File not found; {id}");
+            return file is not null ? Ok(file) : NotFound($"File Not Found: File {id}");
         }
 
 

@@ -16,7 +16,7 @@ namespace FinancialBackendApi.Services
         /// Retrieves a file and its associated details.
         /// </summary>
         /// <param name="fileId">The ID of the file.</param>
-        Task<FileWithDetailsDto> GetFileWithDetailsAsync(int fileId);
+        Task<FileWithDetailsDto?> GetFileWithDetailsAsync(int fileId);
 
         /// <summary>
         /// Retrieves the details associated with a file.

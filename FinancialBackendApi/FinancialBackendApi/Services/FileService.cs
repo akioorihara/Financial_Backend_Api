@@ -63,41 +63,41 @@ namespace FinancialBackendApi.Services
         /// </summary>
         /// <param name="fileId">The file ID.</param>
         /// <returns>The file with details.</returns>
-        public async Task<FileWithDetailsDto> GetFileWithDetailsAsync(int fileId)
+        public async Task<FileWithDetailsDto?> GetFileWithDetailsAsync(int fileId)
         {
 
             var file = await _context.FileHeaders
                 .Include(x => x.Details)
                 .FirstOrDefaultAsync(x => x.Id == fileId);
 
-            if (file != null)
+            if (file == null)
             {
-                return (new FileWithDetailsDto
-                {
-                    FileHeader = new FileHeaderDto
-                    {
-                        Id = file.Id,
-                        FileName = file.FileName,
-                        Created = file.Created,
-                        Status = file.Status
-
-                    },
-                    FileDetails = file.Details.Select(x => new FileDetailDto
-                    {
-                        Id = x.Id,
-                        FileHeaderId = x.FileHeaderId,
-                        Date = x.Date,
-                        Amount = x.Amount,
-                        Description = x.Description,
-                        Type = x.Type,
-                        Category = x.Category,
-                        Account = x.Account
-                    }).ToList()
-
-                });
+                return null;
             }
 
-            return new FileWithDetailsDto();
+            return (new FileWithDetailsDto
+            {
+                FileHeader = new FileHeaderDto
+                {
+                    Id = file.Id,
+                    FileName = file.FileName,
+                    Created = file.Created,
+                    Status = file.Status
+
+                },
+                FileDetails = file.Details.Select(x => new FileDetailDto
+                {
+                    Id = x.Id,
+                    FileHeaderId = x.FileHeaderId,
+                    Date = x.Date,
+                    Amount = x.Amount,
+                    Description = x.Description,
+                    Type = x.Type,
+                    Category = x.Category,
+                    Account = x.Account
+                }).ToList()
+
+            });
         }
     }
 }
