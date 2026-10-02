@@ -86,7 +86,7 @@ namespace FinancialBackendApi.Controllers
         /// A list of file details.
         /// </returns>
         [HttpGet("{id}/details", Name = "GetFileDetails")]
-        public async Task<ActionResult<IEnumerable<FileDetail>>> GetFileDetails(int id)
+        public async Task<ActionResult<IEnumerable<FileDetailDto>>> GetFileDetails(int id)
         {
             var file = await _fileService.GetFileDetailDtosAsync(id);
 

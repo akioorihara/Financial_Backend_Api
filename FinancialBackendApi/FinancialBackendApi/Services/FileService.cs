@@ -67,18 +67,21 @@ namespace FinancialBackendApi.Services
                 return null;
             }
 
-            return await _context.FileDetails.Select(x => new FileDetailDto
-            {
-                Id = x.Id,
-                FileHeaderId = x.FileHeaderId,
-                Date = x.Date,
-                Amount = x.Amount,
-                Description = x.Description,
-                Type = x.Type,
-                Category = x.Category,
-                Account = x.Account
+            return await _context
+                .FileDetails
+                .Where(x => x.FileHeaderId == fileId)
+                .Select(x => new FileDetailDto
+                {
+                    Id = x.Id,
+                    FileHeaderId = x.FileHeaderId,
+                    Date = x.Date,
+                    Amount = x.Amount,
+                    Description = x.Description,
+                    Type = x.Type,
+                    Category = x.Category,
+                    Account = x.Account
 
-            }).ToListAsync();
+                }).ToListAsync();
 
         }
 
