@@ -22,7 +22,7 @@ namespace FinancialBackendApi.Services
         /// Retrieves the details associated with a file.
         /// </summary>
         /// <param name="fileId">The ID of the file.</param>
-        Task<IEnumerable<FileDetailDto>> GetFileDetailDtosAsync(int fileId);
+        Task<IEnumerable<FileDetailDto?>> GetFileDetailDtosAsync(int fileId);
 
         /// <summary>
         /// Deletes a file and its associated details.

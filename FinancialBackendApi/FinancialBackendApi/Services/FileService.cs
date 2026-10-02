@@ -57,7 +57,7 @@ namespace FinancialBackendApi.Services
         /// </summary>
         /// <param name="fileId">The file ID.</param>
         /// <returns>The file details.</returns>
-        public async Task<IEnumerable<FileDetailDto>> GetFileDetailDtosAsync(int fileId)
+        public async Task<IEnumerable<FileDetailDto?>> GetFileDetailDtosAsync(int fileId)
         {
 
             var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == fileId);
