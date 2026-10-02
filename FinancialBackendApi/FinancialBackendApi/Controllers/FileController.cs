@@ -88,14 +88,10 @@ namespace FinancialBackendApi.Controllers
         [HttpGet("{id}/details", Name = "GetFileDetails")]
         public async Task<ActionResult<IEnumerable<FileDetail>>> GetFileDetails(int id)
         {
-            var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == id);
-            if (file == null)
-                return NotFound($"File not found: ID - {id}");
+            var file = await _fileService.GetFileDetailDtosAsync(id);
 
-            return await _context.FileDetails
-                .Where(x => x.FileHeaderId == id)
-                .OrderByDescending(x => x.Id)
-                .Take(100).ToListAsync();
+            return file is not null ? Ok(file) : NotFound($"File Not Found: Fileid {id}");
+
         }
 
 
