@@ -59,14 +59,6 @@ namespace FinancialBackendApi.Services
         /// <returns>The file details.</returns>
         public async Task<IEnumerable<FileDetailDto?>> GetFileDetailDtosAsync(int fileId)
         {
-
-            var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == fileId);
-            if (file == null)
-            {
-                _logger.LogWarning($"File with ID {fileId} not found.");
-                return null;
-            }
-
             return await _context
                 .FileDetails
                 .Where(x => x.FileHeaderId == fileId)
