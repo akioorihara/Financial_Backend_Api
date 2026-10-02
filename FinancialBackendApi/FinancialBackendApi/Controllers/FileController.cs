@@ -69,12 +69,12 @@ namespace FinancialBackendApi.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest(("Invalid File ID: ", id));
+                return BadRequest("Invalid File ID: {id}");
             }
 
             var file = await _fileService.GetFileWithDetailsAsync(id);
 
-            return file is not null ? Ok(file) : NotFound($"File Not Found: File {id}");
+            return file is not null ? Ok(file) : NotFound(("File Not Found: Fileid", id));
         }
 
 
