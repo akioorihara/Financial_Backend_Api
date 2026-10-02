@@ -105,18 +105,12 @@ namespace FinancialBackendApi.Controllers
         [HttpDelete("{id}", Name = "DeleteFile")]
         public async Task<ActionResult> DeleteFile(int id)
         {
-            var file = await _context.FileHeaders.FirstOrDefaultAsync(x => x.Id == id);
+            var file = await _fileService.DeleteFileAsync(id);
 
-            if (file == null)
-                return NotFound($"File not found: ID - {id}");
+            if (file)
+                return Ok($"File Id {id} - Has been deleted.");
 
-            // remove the file and its details from the database
-            _context.FileHeaders.Remove(file);
-
-            // save changes to the database
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return NotFound(("Not Found: FileId", id));
         }
 
 

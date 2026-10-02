@@ -47,9 +47,22 @@ namespace FinancialBackendApi.Services
                 .ToListAsync();
         }
 
-        public async Task DeleteFileAsync(int fileId)
+        /// <summary>
+        /// Deletes a file by its ID.
+        /// </summary>
+        /// <param name="fileId">The ID of the file to delete.</param>
+        /// <returns>A boolean indicating whether the file was deleted.</returns>
+        public async Task<bool> DeleteFileAsync(int fileId)
         {
-            throw new NotImplementedException();
+            var file = await _context.FileHeaders.SingleOrDefaultAsync(x => x.Id == fileId);
+
+            if (file == null)
+                return false;
+
+            _context.FileHeaders.Remove(file);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
         /// <summary>

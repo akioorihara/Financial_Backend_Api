@@ -28,6 +28,6 @@ namespace FinancialBackendApi.Services
         /// Deletes a file and its associated details.
         /// </summary>
         /// <param name="fileId">The ID of the file.</param>
-        Task DeleteFileAsync(int fileId);
+        Task<bool> DeleteFileAsync(int fileId);
     }
 }
