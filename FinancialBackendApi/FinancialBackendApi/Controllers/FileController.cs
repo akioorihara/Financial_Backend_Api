@@ -88,6 +88,11 @@ namespace FinancialBackendApi.Controllers
         [HttpGet("{id}/details", Name = "GetFileDetails")]
         public async Task<ActionResult<IEnumerable<FileDetailDto>>> GetFileDetails(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid File ID: {id}");
+            }
+
             var file = await _fileService.GetFileDetailDtosAsync(id);
 
             return file is not null ? Ok(file) : NotFound(("File Not Found: Fileid", id));
@@ -105,6 +110,11 @@ namespace FinancialBackendApi.Controllers
         [HttpDelete("{id}", Name = "DeleteFile")]
         public async Task<ActionResult> DeleteFile(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid File ID: {id}");
+            }
+
             var file = await _fileService.DeleteFileAsync(id);
 
             if (file)
