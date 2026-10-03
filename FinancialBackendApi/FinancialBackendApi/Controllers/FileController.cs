@@ -105,11 +105,10 @@ namespace FinancialBackendApi.Controllers
         [HttpDelete("{id}", Name = "DeleteFile")]
         public async Task<ActionResult> DeleteFile(int id)
         {
-            _logger.LogInformation("DeleteFile called with id: {id}", id);
             var file = await _fileService.DeleteFileAsync(id);
 
             if (file)
-                return Ok($"File Id {id} - Has been deleted.");
+                return Ok(("File deleted successfully - File ID - ", id));
 
             return NotFound(("Not Found: FileId", id));
         }
