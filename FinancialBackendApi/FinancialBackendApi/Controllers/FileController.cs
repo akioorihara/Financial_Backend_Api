@@ -108,7 +108,7 @@ namespace FinancialBackendApi.Controllers
             var file = await _fileService.DeleteFileAsync(id);
 
             if (file)
-                return Ok(("File deleted successfully - File ID - ", id));
+                return Ok(("File deleted successfully.", id));
 
             return NotFound(("Not Found: FileId", id));
         }
