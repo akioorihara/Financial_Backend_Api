@@ -118,7 +118,7 @@ namespace FinancialBackendApi.Controllers
             var file = await _fileService.DeleteFileAsync(id);
 
             if (file)
-                return Ok(("File deleted successfully.", id));
+                return NoContent();
 
             return NotFound(("Not Found: FileId", id));
         }
@@ -131,19 +131,19 @@ namespace FinancialBackendApi.Controllers
         /// A success message indicating the file was uploaded.
         /// </returns>
         [HttpPost(Name = "UploadFile")]
-        public ActionResult<string> UploadFile(string fileName)
+        public ActionResult<string> UploadFile(IFormFile file)
         {
             var nextId = _context.FileHeaders.Max(x => x.Id) + 1;
 
             _context.FileHeaders.Add(new FileHeader()
             {
                 Id = nextId,
-                FileName = fileName,
+                FileName = file.FileName,
                 Created = DateTime.UtcNow,
                 Status = "Pending"
             });
 
-            return CreatedAtAction("GetFile", new { id = nextId }, fileName);
+            return CreatedAtAction("GetFile", new { id = nextId }, file);
         }
 
 
