@@ -134,7 +134,13 @@ namespace FinancialBackendApi.Controllers
         public ActionResult<string> UploadFile(IFormFile file)
         {
             // Check if the file already exists in the database
-            var nextId = _context.FileHeaders.Max(x => x.Id) + 1;
+            var existingFile = _context.FileHeaders
+                .FirstOrDefaultAsync(x => x.FileName == file.FileName);
+
+            if (existingFile.Result == null)
+            {
+                return BadRequest($"File already imported into the database: {file.FileName}");
+            }
 
             _context.FileHeaders.Add(new FileHeader()
             {
