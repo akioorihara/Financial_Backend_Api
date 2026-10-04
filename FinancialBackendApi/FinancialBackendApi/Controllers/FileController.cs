@@ -145,17 +145,6 @@ namespace FinancialBackendApi.Controllers
             var result = _fileService.ImportCsvAsync(file);
 
             return result is not null ? Ok(result) : BadRequest($"File import failed: {file.FileName}"); ")
-
-
-            //_context.FileHeaders.Add(new FileHeader()
-            //{
-            //    Id = nextId,
-            //    FileName = file.FileName,
-            //    Created = DateTime.UtcNow,
-            //    Status = "Pending"
-            //});
-
-            //return CreatedAtAction("GetFile", new { id = nextId }, file);
         }
 
 
