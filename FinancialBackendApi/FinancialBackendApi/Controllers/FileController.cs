@@ -131,20 +131,20 @@ namespace FinancialBackendApi.Controllers
         /// A success message indicating the file was uploaded.
         /// </returns>
         [HttpPost(Name = "UploadFile")]
-        public ActionResult<string> UploadFile(IFormFile file)
+        public ActionResult<FileHeaderDto> UploadFile(IFormFile file)
         {
 
             var existingFile = _context.FileHeaders
                 .FirstOrDefaultAsync(x => x.FileName == file.FileName);
 
-            if (existingFile.Result == null)
+            if (existingFile == null)
             {
                 return BadRequest($"File already imported into the database: {file.FileName}");
             }
 
             var result = _fileService.ImportCsvAsync(file);
 
-            return result is not null ? Ok(result) : BadRequest($"File import failed: {file.FileName}"); ")
+            return result is not null ? Ok(result) : BadRequest($"File import failed: {file.FileName}");
         }
 
 

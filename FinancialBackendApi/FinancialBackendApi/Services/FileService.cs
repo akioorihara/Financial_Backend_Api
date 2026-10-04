@@ -1,5 +1,6 @@
 ﻿using FinancialBackendApi.Data;
 using FinancialBackendApi.Models.DTOs;
+using FinancialBackendApi.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinancialBackendApi.Services
@@ -142,8 +143,33 @@ namespace FinancialBackendApi.Services
         public Task<FileHeaderDto> ImportCsvAsync(IFormFile file)
         {
 
+            if (!file.FileName.Contains(".csv", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException("The provided file is not a CSV file.");
+            }
 
-            throw new NotImplementedException();
+
+            _context.FileHeaders.Add(new FileHeader
+            {
+                FileName = file.FileName,
+                Created = DateTime.UtcNow,
+                Status = "Pending",
+                Details = new List<FileDetail>
+                {
+
+                }
+            });
+
+
+
+
+            return Task.FromResult(new FileHeaderDto
+            {
+                Id = 0, // Placeholder ID, should be replaced with actual ID after saving to the database
+                FileName = file.FileName,
+                Created = DateTime.UtcNow,
+                Status = "Pending"
+            });
 
             //_context.FileHeaders.Add(new FileHeader()
             //{
