@@ -1,0 +1,9 @@
+Date,Amount,Description,Type,Category,Account
+2026-09-01,-1450.00,Apartment rent,Expense,Housing,Checking
+2026-09-02,-78.42,Weekly groceries,Expense,Groceries,Checking
+2026-09-03,3250.00,Payroll deposit,Income,Salary,Checking
+2026-09-04,-62.18,Fuel station,Expense,Transportation,Checking
+2026-09-05,-15.99,Music subscription,Expense,Entertainment,Credit Card
+2026-09-06,-120.00,Electricity bill,Expense,Utilities,Checking
+2026-09-07,45.00,Marketplace sale,Income,Other Income,Checking
+2026-09-08,-34.50,Coffee and lunch,Expense,Dining,Credit Card

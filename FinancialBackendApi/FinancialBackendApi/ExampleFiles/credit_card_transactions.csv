@@ -1,0 +1,9 @@
+Date,Amount,Description,Type,Category,Account
+2026-09-10,-29.99,Online bookstore,Expense,Books,Credit Card
+2026-09-11,-86.73,Restaurant dinner,Expense,Dining,Credit Card
+2026-09-12,-12.00,Cloud storage,Expense,Software,Credit Card
+2026-09-13,15.00,Refund - returned item,Refund,Shopping,Credit Card
+2026-09-14,-249.99,Wireless headphones,Expense,Electronics,Credit Card
+2026-09-15,-8.50,Parking garage,Expense,Transportation,Credit Card
+2026-09-16,-55.25,Pharmacy,Expense,Healthcare,Credit Card
+2026-09-17,-19.99,Movie tickets,Expense,Entertainment,Credit Card

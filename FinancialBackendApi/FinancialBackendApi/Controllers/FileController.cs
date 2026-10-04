@@ -142,15 +142,17 @@ namespace FinancialBackendApi.Controllers
                 return BadRequest($"File already imported into the database: {file.FileName}");
             }
 
-            _context.FileHeaders.Add(new FileHeader()
-            {
-                Id = nextId,
-                FileName = file.FileName,
-                Created = DateTime.UtcNow,
-                Status = "Pending"
-            });
+            //_context.FileHeaders.Add(new FileHeader()
+            //{
+            //    Id = nextId,
+            //    FileName = file.FileName,
+            //    Created = DateTime.UtcNow,
+            //    Status = "Pending"
+            //});
 
-            return CreatedAtAction("GetFile", new { id = nextId }, file);
+            //return CreatedAtAction("GetFile", new { id = nextId }, file);
+
+            return null;
         }
 
 
