@@ -29,5 +29,12 @@ namespace FinancialBackendApi.Services
         /// </summary>
         /// <param name="fileId">The ID of the file.</param>
         Task<bool> DeleteFileAsync(int fileId);
+
+        /// <summary>
+        /// Imports a CSV file and returns the file header information.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        Task<FileHeaderDto> ImportCsvAsync(IFormFile file);
     }
 }

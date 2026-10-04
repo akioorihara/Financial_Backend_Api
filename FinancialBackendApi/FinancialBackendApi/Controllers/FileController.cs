@@ -133,7 +133,7 @@ namespace FinancialBackendApi.Controllers
         [HttpPost(Name = "UploadFile")]
         public ActionResult<string> UploadFile(IFormFile file)
         {
-            // Check if the file already exists in the database
+
             var existingFile = _context.FileHeaders
                 .FirstOrDefaultAsync(x => x.FileName == file.FileName);
 
@@ -141,6 +141,11 @@ namespace FinancialBackendApi.Controllers
             {
                 return BadRequest($"File already imported into the database: {file.FileName}");
             }
+
+            var result = _fileService.ImportCsvAsync(file);
+
+            return result is not null ? Ok(result) : BadRequest($"File import failed: {file.FileName}"); ")
+
 
             //_context.FileHeaders.Add(new FileHeader()
             //{
@@ -151,8 +156,6 @@ namespace FinancialBackendApi.Controllers
             //});
 
             //return CreatedAtAction("GetFile", new { id = nextId }, file);
-
-            return null;
         }
 
 

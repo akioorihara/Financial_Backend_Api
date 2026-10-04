@@ -132,5 +132,18 @@ namespace FinancialBackendApi.Services
 
             });
         }
+
+        /// <summary>
+        /// Imports a CSV file and returns the file header information.
+        /// </summary>
+        /// <param name="file">IFormFile </param>
+        /// <returns>FileHeaderDto</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Task<FileHeaderDto> ImportCsvAsync(IFormFile file)
+        {
+
+
+            throw new NotImplementedException();
+        }
     }
 }
