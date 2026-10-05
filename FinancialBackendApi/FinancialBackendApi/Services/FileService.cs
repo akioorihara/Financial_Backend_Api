@@ -148,6 +148,7 @@ namespace FinancialBackendApi.Services
                 throw new ArgumentException("The provided file is not a CSV file.");
             }
 
+            // Parse the CSV file and create a new FileHeaderDto and associated FileDetailsDto
 
             _context.FileHeaders.Add(new FileHeader
             {
