@@ -135,7 +135,7 @@ namespace FinancialBackendApi.Services
         }
 
         /// <summary>
-        /// TODO - Imports a CSV file and returns the file header information.
+        /// TODO - Imports a CSV file and returns the file header and associated FileDetailsDTOs.
         /// </summary>
         /// <param name="file">IFormFile </param>
         /// <returns>FileHeaderDto</returns>
@@ -152,7 +152,6 @@ namespace FinancialBackendApi.Services
 
             _context.FileHeaders.Add(new FileHeader
             {
-                FileName = file.FileName,
                 Created = DateTime.UtcNow,
                 Status = "Pending",
                 Details = new List<FileDetail>
