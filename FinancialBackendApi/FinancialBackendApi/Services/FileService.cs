@@ -150,6 +150,12 @@ namespace FinancialBackendApi.Services
 
             // Parse the CSV file and create a new FileHeaderDto and associated FileDetailsDto
 
+            for (long i = 0; i < file.Length; i++)
+            {
+                file.OpenReadStream();
+            }
+
+
             _context.FileHeaders.Add(new FileHeader
             {
                 Created = DateTime.UtcNow,
