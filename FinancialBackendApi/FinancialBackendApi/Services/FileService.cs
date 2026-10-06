@@ -140,9 +140,8 @@ namespace FinancialBackendApi.Services
         /// <param name="file">IFormFile </param>
         /// <returns>FileHeaderDto</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<FileHeaderDto> ImportCsvAsync(IFormFile file)
+        public async Task<FileHeaderDto> ImportCsvAsync(IFormFile file)
         {
-
             if (!file.FileName.Contains(".csv", StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException("The provided file is not a CSV file.");
@@ -150,45 +149,53 @@ namespace FinancialBackendApi.Services
 
             // Parse the CSV file and create a new FileHeaderDto and associated FileDetailsDto
             using var reader = new StreamReader(file.OpenReadStream());
+            var details = new List<FileDetail>();
+
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(line) || line.StartsWith("Date,"))
+                {
+                    continue; // Skip empty lines and comments
+                }
+
+
+
                 var values = line?.Split(",");
 
+                var fileDetail = new FileDetail
+                {
+                    Date = DateOnly.Parse(values?[0] ?? throw new InvalidOperationException("Date value is missing.")),
+                    Amount = decimal.Parse(values?[1] ?? throw new InvalidOperationException("Amount value is missing.")),
+                    Description = values?[2] ?? throw new InvalidOperationException("Description value is missing."),
+                    Type = values?[3] ?? throw new InvalidOperationException("Type value is missing."),
+                    Category = values?[4] ?? throw new InvalidOperationException("Category value is missing."),
+                    Account = values?[5] ?? throw new InvalidOperationException("Account value is missing.")
+                };
+                details.Add(fileDetail);
             }
 
 
-            _context.FileHeaders.Add(new FileHeader
+            var fileHeader = new FileHeader
             {
-                Created = DateTime.UtcNow,
-                Status = "Pending",
-                Details = new List<FileDetail>
-                {
-
-                }
-            });
-
-
-            // Save the changes to the database
-            // return the created FileHeaderDtop with the associated FileDetailsDto
-
-            return Task.FromResult(new FileHeaderDto
-            {
-                Id = 0, // Placeholder ID, should be replaced with actual ID after saving to the database
                 FileName = file.FileName,
                 Created = DateTime.UtcNow,
-                Status = "Pending"
-            });
+                Status = "Pending",
+                Updated = null,
+                Details = details
+            };
 
-            //_context.FileHeaders.Add(new FileHeader()
-            //{
-            //    Id = nextId,
-            //    FileName = file.FileName,
-            //    Created = DateTime.UtcNow,
-            //    Status = "Pending"
-            //});
+            _context.FileHeaders.Add(fileHeader);
+            await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetFile", new { id = nextId }, file);
+            return new FileHeaderDto
+            {
+                Id = fileHeader.Id,
+                FileName = fileHeader.FileName,
+                Created = fileHeader.Created,
+                Status = fileHeader.Status
+            };
 
         }
     }
