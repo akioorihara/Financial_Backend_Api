@@ -149,29 +149,42 @@ namespace FinancialBackendApi.Services
 
             // Parse the CSV file and create a new FileHeaderDto and associated FileDetailsDto
             using var reader = new StreamReader(file.OpenReadStream());
+            var headerLine = reader.ReadLine(); // Read the header line
+
             var details = new List<FileDetail>();
 
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
 
-                if (string.IsNullOrWhiteSpace(line) || line.StartsWith("Date,"))
+                if (string.IsNullOrWhiteSpace(line))
                 {
-                    continue; // Skip empty lines and comments
+                    continue; // Skip empty lines 
                 }
-
-
 
                 var values = line?.Split(",");
 
+                if (values == null || values.Length < 6 || values.Length > 6)
+                {
+                    throw new InvalidOperationException("CSV line does not contain enough values.");
+                }
+
                 var fileDetail = new FileDetail
                 {
-                    Date = DateOnly.Parse(values?[0] ?? throw new InvalidOperationException("Date value is missing.")),
-                    Amount = decimal.Parse(values?[1] ?? throw new InvalidOperationException("Amount value is missing.")),
-                    Description = values?[2] ?? throw new InvalidOperationException("Description value is missing."),
-                    Type = values?[3] ?? throw new InvalidOperationException("Type value is missing."),
-                    Category = values?[4] ?? throw new InvalidOperationException("Category value is missing."),
-                    Account = values?[5] ?? throw new InvalidOperationException("Account value is missing.")
+                    Date = DateOnly.TryParse(values?[0]
+                        ?? throw new InvalidOperationException("Date value is missing."), out var date)
+                        ? date : throw new InvalidOperationException("Invalid date format."),
+                    Amount = decimal.TryParse(values?[1]
+                        ?? throw new InvalidOperationException("Amount value is missing."), out var amount)
+                        ? amount : throw new InvalidOperationException("Invalid amount format."),
+                    Description = values?[2]
+                        ?? throw new InvalidOperationException("Description value is missing."),
+                    Type = values?[3]
+                        ?? throw new InvalidOperationException("Type value is missing."),
+                    Category = values?[4]
+                        ?? throw new InvalidOperationException("Category value is missing."),
+                    Account = values?[5]
+                        ?? throw new InvalidOperationException("Account value is missing.")
                 };
                 details.Add(fileDetail);
             }
