@@ -149,10 +149,12 @@ namespace FinancialBackendApi.Services
             }
 
             // Parse the CSV file and create a new FileHeaderDto and associated FileDetailsDto
-
-            for (long i = 0; i < file.Length; i++)
+            using var reader = new StreamReader(file.OpenReadStream());
+            while (!reader.EndOfStream)
             {
-                file.OpenReadStream();
+                var line = reader.ReadLine();
+                var values = line?.Split(",");
+
             }
 
 
