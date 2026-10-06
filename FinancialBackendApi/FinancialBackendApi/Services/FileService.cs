@@ -144,9 +144,9 @@ namespace FinancialBackendApi.Services
         {
             var fileExtention = Path.GetExtension(file.FileName).ToLowerInvariant();
 
-            if (fileExtention != ".csv")
+            if (fileExtention != ".csv" || file.Length == 0)
             {
-                throw new ArgumentException("The provided file is not a CSV file.");
+                throw new ArgumentException("The provided file is not a CSV file or is empty.");
             }
 
             // Parse the CSV file and create a new FileHeaderDto and associated FileDetailsDto
