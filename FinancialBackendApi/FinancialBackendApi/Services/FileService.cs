@@ -142,7 +142,9 @@ namespace FinancialBackendApi.Services
         /// <exception cref="NotImplementedException"></exception>
         public async Task<FileHeaderDto> ImportCsvAsync(IFormFile file)
         {
-            if (!file.FileName.Contains(".csv", StringComparison.OrdinalIgnoreCase))
+            var fileExtention = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+            if (fileExtention != ".csv")
             {
                 throw new ArgumentException("The provided file is not a CSV file.");
             }
@@ -164,7 +166,7 @@ namespace FinancialBackendApi.Services
 
                 var values = line?.Split(",");
 
-                if (values == null || values.Length < 6 || values.Length > 6)
+                if (values == null || values.Length != 6)
                 {
                     throw new InvalidOperationException("CSV line does not contain enough values.");
                 }
@@ -201,6 +203,10 @@ namespace FinancialBackendApi.Services
 
             _context.FileHeaders.Add(fileHeader);
             await _context.SaveChangesAsync();
+
+            var savedFileHeader = await _context.FileHeaders
+                .Include(fh => fh.Details)
+                .FirstOrDefaultAsync(fh => fh.Id == fileHeader.Id);
 
             return new FileHeaderDto
             {
