@@ -135,7 +135,7 @@ namespace FinancialBackendApi.Services
         }
 
         /// <summary>
-        /// TODO - Imports a CSV file and returns the file header and associated FileDetailsDTOs.
+        /// Imports a CSV file and returns the file header and associated FileDetailsDTOs.
         /// </summary>
         /// <param name="file">IFormFile </param>
         /// <returns>FileHeaderDto</returns>
@@ -204,10 +204,7 @@ namespace FinancialBackendApi.Services
             _context.FileHeaders.Add(fileHeader);
             await _context.SaveChangesAsync();
 
-            var savedFileHeader = await _context.FileHeaders
-                .Include(fh => fh.Details)
-                .FirstOrDefaultAsync(fh => fh.Id == fileHeader.Id);
-
+            // After saving, the fileHeader.Id will be populated with the new ID from the database
             return new FileHeaderDto
             {
                 Id = fileHeader.Id,
