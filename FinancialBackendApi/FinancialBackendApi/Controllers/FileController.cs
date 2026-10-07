@@ -131,7 +131,7 @@ namespace FinancialBackendApi.Controllers
         /// A success message indicating the file was uploaded.
         /// </returns>
         [HttpPost(Name = "UploadFile")]
-        public async Task<ActionResult<FileHeaderDto>> UploadFile(IFormFile file)
+        public async Task<ActionResult<FileHeaderDto?>> UploadFile(IFormFile file)
         {
             var result = await _fileService.ImportCsvAsync(file);
 

@@ -157,7 +157,7 @@ namespace FinancialBackendApi.Services
 
             if (fileExtention != ".csv" || file.Length == 0)
             {
-                throw new ArgumentException("The provided file is not a CSV file or is empty.");
+                throw new ArgumentException("The provided file contains invalid data.");
             }
 
             // Parse the CSV file and create a new FileHeaderDto and associated FileDetailsDto
@@ -179,7 +179,7 @@ namespace FinancialBackendApi.Services
 
                 if (values == null || values.Length != 6)
                 {
-                    throw new InvalidOperationException("CSV line does not contain enough values.");
+                    throw new InvalidOperationException($"CSV line should be 6 values separated by commas but contains {values?.Length ?? 0}");
                 }
 
                 var fileDetail = new FileDetail
