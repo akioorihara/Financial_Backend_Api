@@ -142,6 +142,7 @@ namespace FinancialBackendApi.Services
         /// <exception cref="NotImplementedException"></exception>
         public async Task<FileHeaderDto> ImportCsvAsync(IFormFile file)
         {
+            // Validate the file extension and size
             var fileExtention = Path.GetExtension(file.FileName).ToLowerInvariant();
 
             if (fileExtention != ".csv" || file.Length == 0)
