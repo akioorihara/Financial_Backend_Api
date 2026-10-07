@@ -142,6 +142,16 @@ namespace FinancialBackendApi.Services
         /// <exception cref="NotImplementedException"></exception>
         public async Task<FileHeaderDto> ImportCsvAsync(IFormFile file)
         {
+            // Check if a file with the same name already exists in the database
+            var existingFile = await _context.FileHeaders
+                .FirstOrDefaultAsync(f => f.FileName == file.FileName);
+
+            if (existingFile != null)
+            {
+                throw new InvalidOperationException($"A file with the name '{file.FileName}' already exists.");
+            }
+
+
             // Validate the file extension and size
             var fileExtention = Path.GetExtension(file.FileName).ToLowerInvariant();
 
