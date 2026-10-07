@@ -36,5 +36,16 @@ namespace FinancialBackendApi.Services
         /// <param name="file"></param>
         /// <returns></returns>
         Task<FileHeaderDto> ImportCsvAsync(IFormFile file);
+
+        /// <summary>
+        /// Updates the status of a file header.
+        /// </summary>
+        /// <param name="fileId">File ID</param>
+        /// <param name="status">The new status.</param>
+        /// <returns>
+        /// The updated file header.
+        /// </returns>
+        Task<FileHeaderDto> UpdateFileHeaderAsync(int fileId, string status);
+
     }
 }

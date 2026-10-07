@@ -225,5 +225,19 @@ namespace FinancialBackendApi.Services
             };
 
         }
+
+        /// <summary>
+        /// Updates the status of a file header by its ID.
+        /// </summary>
+        /// <param name="fileId">File ID</param>
+        /// <param name="status">The new status.</param>
+        /// <returns>
+        /// The updated file header.
+        /// </returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Task<FileHeaderDto> UpdateFileHeaderAsync(int fileId, string status)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

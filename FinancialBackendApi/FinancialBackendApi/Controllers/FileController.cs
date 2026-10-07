@@ -3,7 +3,6 @@ using FinancialBackendApi.Models.DTOs;
 using FinancialBackendApi.Models.Entities;
 using FinancialBackendApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FinancialBackendApi.Controllers
 {
@@ -146,18 +145,18 @@ namespace FinancialBackendApi.Controllers
         /// <returns>
         /// A success message indicating the file was updated.
         /// </returns>
-        [HttpPut("{id}", Name = "UpdateFile")]
-        public async Task<ActionResult<string>> UpdateFile(string fileName)
+        [HttpPut("{id}", Name = "UpdateFileHeader")]
+        public async Task<ActionResult<string>> UpdateFileHeader(int id, string status)
         {
-            bool doesFileExist = await _context.FileHeaders.FirstOrDefaultAsync(x => x.FileName == fileName) != null;
-            if (doesFileExist)
-                return NotFound($"File already exists: {fileName}");
+            //bool doesFileExist = await _context.FileHeaders.FirstOrDefaultAsync(x => x.FileName == fileName) != null;
+            //if (doesFileExist)
+            //    return NotFound($"File already exists: {fileName}");
 
             var file = new FileHeader
             {
-                FileName = fileName,
-                Updated = DateTime.UtcNow
-                //Status = "Pending"
+                //FileName = fileName,
+                Updated = DateTime.UtcNow,
+                Status = status
             };
 
             _context.FileHeaders.Add(file);
