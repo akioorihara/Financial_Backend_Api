@@ -151,7 +151,6 @@ namespace FinancialBackendApi.Services
                 throw new InvalidOperationException($"A file with the name '{file.FileName}' already exists.");
             }
 
-
             // Validate the file extension and size
             var fileExtention = Path.GetExtension(file.FileName).ToLowerInvariant();
 
@@ -166,16 +165,16 @@ namespace FinancialBackendApi.Services
 
             var details = new List<FileDetail>();
 
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
+            string? line;
 
+            while ((line = await reader.ReadLineAsync()) != null)
+            {
                 if (string.IsNullOrWhiteSpace(line))
                 {
                     continue; // Skip empty lines 
                 }
 
-                var values = line?.Split(",");
+                var values = line.Split(",");
 
                 if (values == null || values.Length != 6)
                 {
