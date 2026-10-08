@@ -45,7 +45,7 @@ namespace FinancialBackendApi.Services
         /// <returns>
         /// The updated file header.
         /// </returns>
-        Task<FileHeaderDto> UpdateFileHeaderAsync(int fileId, string status);
+        Task<FileHeaderDto?> UpdateFileHeaderAsync(int fileId, string status);
 
     }
 }

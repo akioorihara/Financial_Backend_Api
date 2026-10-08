@@ -234,7 +234,7 @@ namespace FinancialBackendApi.Services
         /// The updated file header.
         /// </returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<FileHeaderDto> UpdateFileHeaderAsync(int fileId, string status)
+        public async Task<FileHeaderDto?> UpdateFileHeaderAsync(int fileId, string status)
         {
 
             var fileHeader = await _context.FileHeaders.FirstOrDefaultAsync(f => f.Id == fileId);
