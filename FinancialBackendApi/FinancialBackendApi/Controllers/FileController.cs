@@ -148,9 +148,6 @@ namespace FinancialBackendApi.Controllers
         [HttpPut("{id}", Name = "UpdateFileHeader")]
         public async Task<ActionResult<string>> UpdateFileHeader(int id, string status)
         {
-            //bool doesFileExist = await _context.FileHeaders.FirstOrDefaultAsync(x => x.FileName == fileName) != null;
-            //if (doesFileExist)
-            //    return NotFound($"File already exists: {fileName}");
 
             var file = new FileHeader
             {
