@@ -247,7 +247,6 @@ namespace FinancialBackendApi.Services
             fileHeader.Status = status;
             fileHeader.Updated = DateTime.UtcNow;
 
-            _context.FileHeaders.Update(fileHeader);
             await _context.SaveChangesAsync();
 
             return new FileHeaderDto
