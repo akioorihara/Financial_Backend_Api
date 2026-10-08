@@ -124,7 +124,7 @@ namespace FinancialBackendApi.Controllers
 
 
         /// <summary>
-        /// TODO - finish this later after hooking up with the database.
+        /// Finish this later after hooking up with the database.
         /// </summary>
         /// <returns>
         /// A success message indicating the file was uploaded.
