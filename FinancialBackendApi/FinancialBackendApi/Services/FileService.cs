@@ -234,9 +234,30 @@ namespace FinancialBackendApi.Services
         /// The updated file header.
         /// </returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<FileHeaderDto> UpdateFileHeaderAsync(int fileId, string status)
+        public async Task<FileHeaderDto> UpdateFileHeaderAsync(int fileId, string status)
         {
-            throw new NotImplementedException();
+
+            var fileHeader = await _context.FileHeaders.FirstOrDefaultAsync(f => f.Id == fileId);
+
+            if (fileHeader == null)
+            {
+                throw new InvalidOperationException($"File header not found : {fileId}");
+            }
+
+            fileHeader.Status = status;
+            fileHeader.Updated = DateTime.UtcNow;
+
+            _context.FileHeaders.Update(fileHeader);
+            await _context.SaveChangesAsync();
+
+            return new FileHeaderDto
+            {
+                Id = fileHeader.Id,
+                FileName = fileHeader.FileName,
+                Created = fileHeader.Created,
+                Updated = fileHeader.Updated,
+                Status = fileHeader.Status
+            };
         }
     }
 }

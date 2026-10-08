@@ -1,6 +1,5 @@
 ﻿using FinancialBackendApi.Data;
 using FinancialBackendApi.Models.DTOs;
-using FinancialBackendApi.Models.Entities;
 using FinancialBackendApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -139,27 +138,17 @@ namespace FinancialBackendApi.Controllers
 
 
         /// <summary>
-        /// Updates a specific file by its ID. 
+        /// Updates the status of a specific file header by its ID.
         /// </summary>
         /// <param name="id">File ID</param>
-        /// <returns>
-        /// A success message indicating the file was updated.
-        /// </returns>
+        /// <param name="request">The update request containing the new status.</param>
+        /// <returns>File Header DTO</returns>
         [HttpPut("{id}", Name = "UpdateFileHeader")]
-        public async Task<ActionResult<string>> UpdateFileHeader(int id, string status)
+        public async Task<ActionResult<FileHeaderDto?>> UpdateFileHeader(int id, UpdateFileHeaderDto request)
         {
+            var result = await _fileService.UpdateFileHeaderAsync(id, request.Status);
 
-            var file = new FileHeader
-            {
-                //FileName = fileName,
-                Updated = DateTime.UtcNow,
-                Status = status
-            };
-
-            _context.FileHeaders.Add(file);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFile", new { id = file.Id }, file);
+            return result is not null ? Ok(result) : NotFound($"File Not Found: {id}");
         }
 
     }
