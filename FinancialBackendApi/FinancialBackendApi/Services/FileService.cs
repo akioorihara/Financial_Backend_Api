@@ -228,20 +228,20 @@ namespace FinancialBackendApi.Services
         /// <summary>
         /// Updates the status of a file header by its ID.
         /// </summary>
-        /// <param name="fileId">File ID</param>
+        /// <param name="fileHeaderId">File ID</param>
         /// <param name="status">The new status.</param>
         /// <returns>
         /// The updated file header.
         /// </returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<FileHeaderDto?> UpdateFileHeaderAsync(int fileId, string status)
+        public async Task<FileHeaderDto?> UpdateFileHeaderAsync(int fileHeaderId, string status)
         {
 
-            var fileHeader = await _context.FileHeaders.FirstOrDefaultAsync(f => f.Id == fileId);
+            var fileHeader = await _context.FileHeaders.FirstOrDefaultAsync(f => f.Id == fileHeaderId);
 
             if (fileHeader == null)
             {
-                throw new InvalidOperationException($"File header not found : {fileId}");
+                throw new InvalidOperationException($"File header not found : {fileHeaderId}");
             }
 
             fileHeader.Status = status;
