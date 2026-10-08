@@ -43,6 +43,7 @@ namespace FinancialBackendApi.Services
                     Id = x.Id,
                     FileName = x.FileName,
                     Created = x.Created,
+                    Updated = x.Updated,
                     Status = x.Status
                 })
                 .ToListAsync();
