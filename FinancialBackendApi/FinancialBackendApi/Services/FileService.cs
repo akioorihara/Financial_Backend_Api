@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinancialBackendApi.Services
 {
+    /// <summary>
+    /// Represents a service for managing file operations, 
+    /// including importing CSV files, retrieving file headers and details, 
+    /// and updating file statuses.
+    /// </summary>
     public class FileService : IFileService
     {
         /// <summary>
