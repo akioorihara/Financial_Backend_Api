@@ -1,2 +1,2 @@
 # Financial_Backend_Api
-Here is the financial project's backup api in written in c# 
+Here is the financial project's backup api in written in c# and only for the backend service 
