@@ -2,6 +2,26 @@
 
 A .NET 10 backend service for importing, storing, and querying financial transaction files. The project is designed to support CSV-based financial data ingestion and expose a small REST API for file management, transaction metadata, and sample financial categories.
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Solution Structure](#solution-structure)
+- [Core Features](#core-features)
+  - [File Upload and Parsing](#file-upload-and-parsing)
+  - [File Metadata Storage](#file-metadata-storage)
+  - [File Status Lifecycle](#file-status-lifecycle)
+  - [File Retrieval](#file-retrieval)
+- [API Endpoints](#api-endpoints)
+  - [File API](#file-api)
+  - [Financial Sample API](#financial-sample-api)
+- [Database Model](#database-model)
+- [Configuration](#configuration)
+- [Running the Project](#running-the-project)
+- [Example Files](#example-files)
+- [Notes](#notes)
+- [License](#license)
+
 ## Overview
 
 This solution contains a backend API built with ASP.NET Core and Entity Framework Core. It allows users to upload CSV files containing financial transactions, persist them in a SQL Server database, and retrieve file-level or transaction-level records through API endpoints.
@@ -188,5 +208,4 @@ These files provide realistic examples of banking and credit card data that matc
 ## License
 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for details.
-
 
