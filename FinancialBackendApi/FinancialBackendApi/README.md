@@ -1,39 +1,70 @@
 # Financial Backend API
 
-This project is a backend service for processing and managing financial transaction files. It provides a REST API for uploading CSV files, storing file metadata, retrieving records, updating statuses, and exposing simple financial transaction data.
+This ASP.NET Core API imports and manages CSV files containing financial transactions. It persists file metadata and transaction details, and provides endpoints for listing, retrieving, updating, and deleting uploaded files.
+
+For an overview of the full repository and its planned UI, see the [solution README](../../README.md).
 
 ## Technologies
 
-- ASP.NET Core 10
+- ASP.NET Core 10 / .NET SDK 10
 - Entity Framework Core
 - SQL Server
-- Swagger/OpenAPI
-- C#
+- Swagger / OpenAPI
 
-## Project Purpose
+## Features
 
-The application is intended to help manage financial file imports from sources such as bank statements and credit card CSV exports. A user can upload a file, validate the contents, save the records to a database, and then query the saved file data or update its status through API requests.
+- Upload and validate transaction CSV files
+- Store file metadata and transaction rows
+- List files with pagination
+- Retrieve a file and its transactions
+- Update file status and delete uploaded files
+- Explore the API with Swagger in Development
 
-## Main Features
+## Run Locally
 
-- CSV upload and validation
-- File metadata persistence
-- File detail retrieval
-- Status updates for uploaded files
-- Pagination for file listings
-- Example transaction and category endpoints
-- Swagger-based API documentation in development
+Prerequisites:
 
-## Database Model
+- .NET SDK 10
+- A database available through the `DefaultConnection` connection string
 
-The data model includes two main entities:
+From the `FinancialBackendApi/` directory (the directory containing `FinancialBackendApi.slnx`):
 
-- `FileHeader`: stores file metadata
-- `FileDetail`: stores each transaction row associated with a file
+```bash
+dotnet restore FinancialBackendApi.slnx
+dotnet run --project FinancialBackendApi/FinancialBackendApi.csproj
+```
 
-The relationship is defined as a one-to-many link from a file header to its transaction details.
+Configure `ConnectionStrings:DefaultConnection` in the API configuration or through the standard ASP.NET Core configuration providers before starting the API. The application fails at startup if the connection string is missing.
 
-## Expected CSV Format
+In the Development environment, open Swagger UI at:
+
+```text
+https://localhost:<port>/swagger
+```
+
+## API Endpoints
+
+### Files
+
+| Method | Route | Description |
+| --- | --- | --- |
+| `GET` | `/api/file?page=1&pageSize=10` | List uploaded files with pagination |
+| `GET` | `/api/file/{id}` | Get a file and its associated transactions |
+| `GET` | `/api/file/{id}/details` | Get transaction details for a file |
+| `POST` | `/api/file` | Upload a CSV file as multipart form data |
+| `PUT` | `/api/file/{id}` | Update a file's status |
+| `DELETE` | `/api/file/{id}` | Delete a file and its related records |
+
+### Financial
+
+| Method | Route | Description |
+| --- | --- | --- |
+| `GET` | `/api/financial/types` | Get sample financial transaction types |
+| `GET` | `/api/financial/{id}` | Get a sample financial entry by ID |
+
+## CSV Format
+
+Uploaded files use this header and column order:
 
 ```csv
 Date,Amount,Description,Type,Category,Account
@@ -41,64 +72,19 @@ Date,Amount,Description,Type,Category,Account
 2026-09-02,-78.42,Weekly groceries,Expense,Groceries,Checking
 ```
 
-The application reads each line as a transaction entry and maps the values to:
+Sample files are available in `ExampleFiles/`:
 
-- Date
-- Amount
-- Description
-- Type
-- Category
-- Account
+- `bank_transactions.csv`
+- `credit_card_transactions.csv`
 
-## Endpoint Summary
+## Data Model
 
-### Files
+The API uses Entity Framework Core with a `FinancialDbContext`:
 
-- `GET /api/file`
-- `GET /api/file/{id}`
-- `GET /api/file/{id}/details`
-- `POST /api/file`
-- `PUT /api/file/{id}`
-- `DELETE /api/file/{id}`
+- `FileHeader` stores file metadata.
+- `FileDetail` stores transaction rows.
+- One `FileHeader` can have many `FileDetail` records.
 
-### Financial
+## License
 
-- `GET /api/financial/types`
-- `GET /api/financial/{id}`
-
-## Configuration
-
-The application uses SQL Server and expects the connection string in `appsettings.json`:
-
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=Financials;Trusted_Connection=True;TrustServerCertificate=True;Timeout=30;"
-}
-```
-
-## Running the API
-
-```bash
-dotnet restore
-dotnet build
-dotnet run
-```
-
-Then browse the Swagger UI at:
-
-```text
-https://localhost:<port>/swagger
-```
-
-## Example Data
-
-Example CSV files are included under the project:
-
-- `ExampleFiles/bank_transactions.csv`
-- `ExampleFiles/credit_card_transactions.csv`
-
-These examples can be used to test the upload and parsing flow.
-
-## Notes
-
-This backend is focused on data ingestion and persistence for financial file processing. It is a practical example of a .NET API that combines EF Core, file upload handling, and RESTful service design.
+This project is licensed under the MIT license. See the repository's [LICENSE](../../LICENSE).
