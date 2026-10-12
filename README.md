@@ -2,6 +2,10 @@
 
 A financial transaction management solution. The repository currently contains a .NET backend API for importing and managing transaction files. A `UI/` folder is planned for the user interface; its framework and setup instructions can be added once the UI project is in place.
 
+## Terminologies
+
+See [Terminologies](Terminologies.md) for terminology definitions and examples.
+
 ## Repository Structure
 
 ```text
