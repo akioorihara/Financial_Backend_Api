@@ -400,3 +400,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 .DS_Store
+
+# React build output and local environment files
+build/
+dist/
+.env
+.env.*
+!.env.example
