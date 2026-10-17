@@ -1,7 +1,12 @@
+import { useState } from "react";
+
 function Square({ value }) {
+  const [count, setCount] = useState(0);
+
   function handleClick() {
-    console.log("clicked!");
+    setCount(count + 1);
   }
+
   return (
     <button className="square" onClick={handleClick}>
       {value}
